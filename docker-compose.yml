@@ -1,0 +1,15 @@
+services:
+  facilitator:
+    image: x402nano/facilitator:v0.1.0
+    ports:
+      - ${PORT}:3000/tcp
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - PORT=${PORT}
+      - NANO_RPC_URL=${NANO_RPC_URL}
+      - ENABLE_LOGGING=${ENABLE_LOGGING}
+      - LOGGING_VERBOSE=${LOGGING_VERBOSE}
+      - AUTHORIZATION_BEARER_TOKEN=${AUTHORIZATION_BEARER_TOKEN}
+      - X402_NETWORK_IDENTIFIER=${X402_NETWORK_IDENTIFIER}
