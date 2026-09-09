@@ -161,26 +161,47 @@ facilitator
 
 // Create the /verify endpoint of the Facilitator.
 app.post('/verify', async (req, res) => {
-  // Endpoint will be passed in paymentPayload and paymentRequirements from the Resource Server.
-  const { paymentPayload, paymentRequirements } = req.body
+  try {
+    // Endpoint will be passed in paymentPayload and paymentRequirements from the Resource Server.
+    const { paymentPayload, paymentRequirements } = req.body ?? {}
 
-  // Facilitator attempts to verify the payment before eventual settlement (verifies block contents, performs balance check etc..).
-  let verifyResult = await facilitator.verify(paymentPayload, paymentRequirements)
+    if (!paymentPayload || !paymentRequirements) {
+      return res.status(400).json({ error: 'paymentPayload and paymentRequirements are required' })
+    }
 
-  res.json(verifyResult)
+    // Facilitator attempts to verify the payment before eventual settlement (verifies block contents, performs balance check etc..).
+    let verifyResult = await facilitator.verify(paymentPayload, paymentRequirements)
+
+    res.json(verifyResult)
+  } catch (error) {
+    // Express 4 does not catch async errors; without this an unhandled rejection stops the process on Node >= 15.
+    res.status(500).json({
+      error: error instanceof Error ? error.message : 'Unknown error',
+    })
+  }
 })
 
 // -----
 
 // Create the /verify endpoint of the Facilitator.
 app.post('/settle', async (req, res) => {
-  // Endpoint will be passed in paymentPayload and paymentRequirements from the Resource Server.
-  const { paymentPayload, paymentRequirements } = req.body
+  try {
+    // Endpoint will be passed in paymentPayload and paymentRequirements from the Resource Server.
+    const { paymentPayload, paymentRequirements } = req.body ?? {}
 
-  // Facilitator attempts to settle the payment (i.e. process the Nano send block on the Nano network).
-  let settleResult = await facilitator.settle(paymentPayload, paymentRequirements)
+    if (!paymentPayload || !paymentRequirements) {
+      return res.status(400).json({ error: 'paymentPayload and paymentRequirements are required' })
+    }
 
-  res.json(settleResult)
+    // Facilitator attempts to settle the payment (i.e. process the Nano send block on the Nano network).
+    let settleResult = await facilitator.settle(paymentPayload, paymentRequirements)
+
+    res.json(settleResult)
+  } catch (error) {
+    res.status(500).json({
+      error: error instanceof Error ? error.message : 'Unknown error',
+    })
+  }
 })
 
 
@@ -204,7 +225,7 @@ app.get('/supported', (req, res) => {
 
 // ---------------------------------------------------
 
-app.listen(3000, () => {
+app.listen(PORT, () => {
   console.log(`✅ x402nano Facilitator listening on port ${PORT}`)
 })
 
