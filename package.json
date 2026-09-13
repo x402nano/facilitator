@@ -1,13 +1,13 @@
 {
   "name": "@x402nano/facilitator",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/x402nano/facilitator.git"
   },
-  "description": "x402 Protocol Facilitator for the Nano network. Verifies and settles x402 Nano payloads, acting as a bridge between a Resource Server and the Nano network",  
+  "description": "x402 Protocol Facilitator for the Nano network. Verifies and settles x402 Nano payloads, acting as a bridge between a Resource Server and the Nano network",
   "dependencies": {
     "@x402/core": "^2.3.1",
     "@x402nano/exact": "^0.1.1",
@@ -27,7 +27,7 @@
     "402",
     "facilitator",
     "x402-facilitator"
-  ],  
+  ],
   "scripts": {
     "start": "node index.js"
   }
